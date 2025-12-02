@@ -1,56 +1,41 @@
 from pathlib import Path
 
-count = 0
-
-def adjustment(res):
-    if res < 0:
-        res += 100
-        print('add 100')
-        if res <= -100:
-            res = res % 100
-            res = abs(res)
-    if res > 99:
-        print('sub 99')
-        res -= 99
-        if res >= 100:
-            res = res % 100
-
-    return res
-
+#get input
 path = Path('input.txt')
-
-dial = 50
 rotation = path.read_text()
+
+#turn into list
 codes = rotation.splitlines()
 
-#cant use dictionary because keys will be duplicated
-#dictionary = {}
-
+#lists for rotation directions and ticks
 direction = []
 ticks = []
 
+#starting place
+dial = 50
+
+#total times landed on 0
+count = 0
+
+#populate ticks and direction lists
 for code in codes:
     direction.append(code[:1])
     ticks.append(int(code[1:]))
 
+#turning lock
 for i in range(0,len(codes)):
     if direction[i] == 'R':
-       # print(direction[i])
         dial+= ticks[i]
         if dial >= 100:
             dial = dial %100
     else:
-        #print(direction[i])
         dial -= ticks[i]
         if dial <= 100:
             dial = dial %100
-    print(dial)
+
+    #check if landed on 0
     if dial == 0:
         count += 1
-   # print(f'before adjust: {dial}')
-    #dial = adjustment(dial)
-    #print(f'after adjust: {dial}')
 
-
-print(dial)
+#answer
 print(count)
